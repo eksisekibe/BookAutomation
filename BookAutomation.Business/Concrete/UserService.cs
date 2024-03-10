@@ -72,7 +72,7 @@ namespace BookAutomation.Business.Concrete
             return this.ToResponseObject(entities);
         }
 
-        public async Task<List<UserRO>> GetByUserNameAsync(string userName)
+        public async Task<UserRO> GetByUserNameAsync(string userName)
         {
             var entities = await _userRepository.GetByUserNameAsync(userName);
             return this.ToResponseObject(entities);

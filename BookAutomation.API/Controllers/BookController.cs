@@ -1,7 +1,12 @@
 ﻿using BookAutomation.Business.Abstract;
 using BookAutomation.Business.Concrete;
 using BookAutomation.Business.DTOs;
+using BookAutomation.Business.ROs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookAutomation.API.Controllers
@@ -17,6 +22,7 @@ namespace BookAutomation.API.Controllers
             _bookService = bookService;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<BookRO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAll()
         {
             var users = await _bookService.GetAllAsync();
@@ -24,6 +30,8 @@ namespace BookAutomation.API.Controllers
         }
 
         [HttpGet("genre")]
+        [ProducesResponseType(typeof(BookRO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetAll([FromQuery] string? genre)
         {
             var last = await _bookService.GetByGenreAsync(genre.ToString());
@@ -31,6 +39,8 @@ namespace BookAutomation.API.Controllers
         } 
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(BookRO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetById(int id)
         {
             var model = await _bookService.GetByIdAsync(id);
@@ -38,6 +48,9 @@ namespace BookAutomation.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(BookRO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Add([FromBody] BookDTO book)
         {
             await _bookService.CreateAsync(book);
@@ -46,6 +59,9 @@ namespace BookAutomation.API.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(BookRO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Update(int id, [FromBody] BookDTO book)
         {
             await _bookService.UpdateAsync(id, book);
@@ -54,6 +70,9 @@ namespace BookAutomation.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(BookRO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Delete(int id)
         {
 

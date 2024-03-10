@@ -2,6 +2,8 @@
 using BookAutomation.Business.Abstract;
 using BookAutomation.Business.Concrete;
 using BookAutomation.Business.Profiles;
+using BookAutomation.Business.Utils.JWT.Abstract;
+using BookAutomation.Business.Utils.JWT.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,8 @@ namespace BookAutomation.Business.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IAuthorizationService,AuthenticationService>();
+            services.AddSingleton<ITokenHelper, JWTHelper>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
 

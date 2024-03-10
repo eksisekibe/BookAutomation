@@ -20,9 +20,20 @@ namespace BookAutomation.Data.Concrete
             return await _context.Categories.Where(c => c.Name.ToLower() == name.ToLower()).ToListAsync();
         }
 
-        //public async Task<List<Category>> GetSubcategoriesAsync(int parentId)
-        //{
-        //    return await _context.Categories.Where(c => c.SubCategoryId == parentId).ToListAsync();
-        //}
+        public override async Task<Category> GetByIdAsync(int id)
+        {
+            return await _context.Categories
+                .Include(x=>x.ParentCategory)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        public override async Task<List<Category>> GetAllAsync()
+        {
+            return await _context.Set<Category>()
+                .Include(x => x.ParentCategory)
+                .OrderBy(e => e.Created_at)
+                .ToListAsync();
+        }
     }
 }

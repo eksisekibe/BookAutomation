@@ -10,15 +10,10 @@ namespace BookAutomation.Entity.Concrete
 {
     public class Category : BaseEntity
     {
-        //public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        //public int? SubCategoryId { get; set; }
-        //public List<Category> Subcategories { get; set; }
 
-        //public Category SubCategory { get; set; }
-        public string? Book { get; set; }
-        public string? SubCategory { get; set; }
-        public List<Book> Books { get; set; }
+        public int? ParentCategoryId { get; set; }
+        public Category? ParentCategory { get; set; }
     }
 }

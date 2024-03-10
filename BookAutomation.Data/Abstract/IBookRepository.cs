@@ -12,8 +12,5 @@ namespace BookAutomation.Data.Abstract
         Task<List<Book>> GetByNameAsync(string name);
         Task<List<Book>> GetByAuthorAsync(string author);
         Task<List<Book>> GetByGenreAsync(string genre);
-        Task<List<Book>> GetCategoryBooksAsync(int categoryId);
-        Task<string> GetLastModifiedUserNameAsync(int bookId);
-        Task<User> GetLastModifiedByAsync(int bookId);
     }
 }

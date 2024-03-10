@@ -29,7 +29,7 @@ namespace BookAutomation.Data.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(int limit, int offset)
+        public virtual async Task<List<TEntity>> GetAllAsync(int limit, int offset)
         {
             return await _context.Set<TEntity>()
                 .OrderBy(e => e.Created_at)
@@ -37,14 +37,14 @@ namespace BookAutomation.Data.Concrete
                 .Take(limit + offset)
                 .ToListAsync();
         }
-        public async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>()
                 .OrderBy(e => e.Created_at)
                 .ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().Where(e => e.Id == id).FirstOrDefaultAsync();
         }

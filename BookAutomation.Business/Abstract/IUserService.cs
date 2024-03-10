@@ -11,7 +11,7 @@ namespace BookAutomation.Business.Abstract
 {
     public interface IUserService : IService<UserRO, UserDTO>, IResponser<User, UserRO>, IValidator<User>
     {
-        Task<List<UserRO>> GetByUserNameAsync(string userName);
+        Task<UserRO> GetByUserNameAsync(string userName);
         Task<List<UserRO>> GetByFirstNameAsync(string firstName);
         Task<List<UserRO>> GetByLastNameAsync(string lastName);
     }

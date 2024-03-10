@@ -14,7 +14,5 @@ namespace BookAutomation.Business.Abstract
         Task<List<BookRO>> GetByNameAsync(string name);
         Task<List<BookRO>> GetByAuthorAsync(string author);
         Task<List<BookRO>> GetByGenreAsync(string genre);
-        Task<List<BookRO>> GetCategoryBooksAsync(int categoryId);
-        Task<string> GetLastModifiedUserNameAsync(int bookId);
     }
 }

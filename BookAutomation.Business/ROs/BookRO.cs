@@ -14,9 +14,7 @@ namespace BookAutomation.Business.ROs
         public string Author { get; set; }
         public string Genre { get; set; }
         public DateTime PublishDate { get; set; }
-        public int CategoryId { get; set; }
         public CategoryRO Category { get; set; }
-        public int LastModifiedById { get; set; }
-        public UserRO LastModifiedBy { get; set; }
+        public string LastModifiedBy { get; set; }
     }
 }

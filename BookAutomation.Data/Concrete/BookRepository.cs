@@ -30,29 +30,40 @@ namespace BookAutomation.Data.Concrete
         {
             return await _context.Books.Where(n => n.Name.ToLower().StartsWith(name.ToLower()) || n.Name.ToLower().Contains(name.ToLower())).ToListAsync();
         }
-        public async Task<List<Book>> GetCategoryBooksAsync(int categoryId)
+        /*
+       public Task<User> GetLastModifiedByAsync(int bookId)
+       {
+           throw new NotImplementedException();
+       }
+
+       public async Task<string> GetLastModifiedUserNameAsync(int bookId)
+       {
+           var book = await _context.Books.Include(b => b.LastModifiedBy).FirstOrDefaultAsync(b => b.Id == bookId);
+
+           if (book != null && book.LastModifiedBy != null)
+           {
+               return $"{book.LastModifiedBy.FirstName} {book.LastModifiedBy.LastName}";
+           }
+           else
+           {
+               return "Bilinmiyor";
+           }
+       }*/
+
+        public override async Task<Book> GetByIdAsync(int id)
         {
-            return await _context.Categories.Where(c => c.Id == categoryId).SelectMany(c => c.Books).ToListAsync();
+            return await _context.Set<Book>()
+                .Include(x=>x.Category)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
         }
 
-        public Task<User> GetLastModifiedByAsync(int bookId)
+        public override async Task<List<Book>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<Book>()
+                .Include(x => x.Category)
+                .OrderBy(e => e.Created_at)
+                .ToListAsync();
         }
-
-        public async Task<string> GetLastModifiedUserNameAsync(int bookId)
-        {
-            var book = await _context.Books.Include(b => b.LastModifiedBy).FirstOrDefaultAsync(b => b.Id == bookId);
-
-            if (book != null && book.LastModifiedBy != null)
-            {
-                return $"{book.LastModifiedBy.FirstName} {book.LastModifiedBy.LastName}";
-            }
-            else
-            {
-                return "Bilinmiyor";
-            }
-        }
-
     }
 }

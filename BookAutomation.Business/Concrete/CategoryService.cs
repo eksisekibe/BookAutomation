@@ -87,9 +87,9 @@ namespace BookAutomation.Business.Concrete
             var entity = await _categoryRepository.GetByIdAsync(id);
             if (entity is null)
                 throw new ItemNotFoundException("Category is not found - Kategori bulunamadı");
-            var updateEntity = _mapper.Map<Book>(dto);
+            var updateEntity = _mapper.Map<Category>(dto);
             // ---------------------Dynamic Update----------------------------
-            foreach (var prop in typeof(Book).GetProperties())
+            foreach (var prop in typeof(Category).GetProperties())
             {
                 if (prop.Name != "Id")
                 {

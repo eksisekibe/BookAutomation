@@ -25,9 +25,9 @@ namespace BookAutomation.Data.Concrete
             return await _context.Users.Where(l => l.LastName.ToLower().StartsWith(lastName.ToLower()) || l.LastName.ToLower().Contains(lastName.ToLower())).ToListAsync();
         }
 
-        public async Task<List<User>> GetByUserNameAsync(string userName)
+        public async Task<User> GetByUserNameAsync(string userName)
         {
-            return await _context.Users.Where(l => l.Username == userName).ToListAsync();
+            return await _context.Users.Where(l => l.Username == userName).FirstOrDefaultAsync();
         }
     }
 }

@@ -9,6 +9,7 @@ using BookAutomation.Entity.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,19 +19,22 @@ namespace BookAutomation.Business.Concrete
     {
         private readonly IBookRepository _bookRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPrincipal _principal;
         private IMapper _mapper;
 
-        public BookService(IBookRepository bookRepository, IUserRepository userRepository, IMapper mapper)
+        public BookService(IBookRepository bookRepository, IUserRepository userRepository, IMapper mapper, IPrincipal principal)
         {
             _bookRepository = bookRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+            _principal = principal;
         }
         public async Task<bool> CreateAsync(BookDTO dto)
         {
             var entity = _mapper.Map<Book>(dto);
             if (Validation(entity))
             {
+                entity.LastModifiedBy = _principal.Identity.Name;
                 await _bookRepository.CreateAsync(entity);
                 dto.Id = entity.Id;
                 return true;
@@ -78,12 +82,7 @@ namespace BookAutomation.Business.Concrete
             var entities = await _bookRepository.GetByNameAsync(name);
             return this.ToResponseObject(entities);
         }
-        public async Task<List<BookRO>> GetCategoryBooksAsync(int categoryId)
-        {
-            var entities = await _bookRepository.GetCategoryBooksAsync(categoryId);
-            return this.ToResponseObject(entities);
-        }
-
+        /*
         public async Task<string> GetLastModifiedUserNameAsync(int bookId)
         {
             var lastModifiedBy = await _bookRepository.GetLastModifiedByAsync(bookId);
@@ -100,7 +99,7 @@ namespace BookAutomation.Business.Concrete
 
             return "Bilinmiyor";
         }
-
+        */
         public BookRO ToResponseObject(Book entity)
         {
             return _mapper.Map<BookRO>(entity);
@@ -134,6 +133,7 @@ namespace BookAutomation.Business.Concrete
 
             if (Validation(entity))
             {
+                entity.LastModifiedBy = _principal.Identity.Name;
                 await _bookRepository.UpdateAsync(entity);
                 return true;
             }
